@@ -9,10 +9,51 @@
 </head>
 
 <body>
-    <h1>Welcome, {{token}}</h1>
+    <div id="welcome"></div>
+
+        <input type="text" id="name" name="name">
+        <button type="submit" id="create">Create new repository</button>
+
+    
+
+    <div id="repos"></div>
 </body>
 <script>
-	console.log({{token}})
-</script>
+    const query = window.location.search.substring(1)
+const token = query.split('access_token=')[1]
 
+const getUsername = fetch('https://api.github.com/user', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/vnd.github+json'
+                    }
+                })
+                .then(res => res.json())
+                .then(res => res.login)
+
+getUsername.then(username => {
+    document.getElementById('welcome').innerHTML += `<h1>Welcome, ${username}</h1>`
+    fetch(`https://api.github.com/users/${username}/repos`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    })
+    .then(res => res.json())
+    .then(res => {
+    document.getElementById('welcome').innerHTML += `<h2>Below are your repositories</h2>`
+        list = document.getElementById('repos')
+        res.forEach((repo) => {
+            list.innerHTML += `<a href = ${repo.html_url}><h3>${repo.name}</h3></a>`
+        })
+    })
+})
+
+document.getElementById('create').addEventListener("click", function(){
+    let name = document.getElementById('name').value
+    if(name === "") alert('Name cannot be empty')
+    else{
+        window.location = `http://localhost:3000/auth/create?access_token=${token}&name=${name}`
+    }
+})
+</script>
 </html>

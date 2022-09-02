@@ -15,13 +15,12 @@ export class ControllersController {
     }
 
     @Get('github/callback')
-    afterAuthorication(@Req() req: Request, @Res() res: Response){
+    afterAuthorization(@Req() req: Request, @Res() res: Response){
         const code = req.query.code
 
         axios({
             method: 'post',
             url: `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${code}`,
-            // Set the content type header, so that we get the response in JSON
             headers: {
                 accept: 'application/json'
             }
@@ -34,9 +33,24 @@ export class ControllersController {
 
     @Get('profile')
     @Render('profile')
-    profile(@Req() req: Request){
+    profile(){
+        return {}
+    }
+
+    @Get('create')
+    create(@Req() req: Request, @Res() res: Response){
         const accessToken = req.query.access_token
-        return {token: accessToken}
-        
+
+        axios({
+            method: 'post',
+            url: 'https://api.github.com/repos/Sanyam-Garg/ML-template/generate',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+            data: {
+                name: req.query.name
+            }
+        }).then((response) => console.log(response)
+        )
     }
 }
