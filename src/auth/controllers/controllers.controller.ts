@@ -50,7 +50,9 @@ export class ControllersController {
             data: {
                 name: req.query.name
             }
-        }).then((response) => console.log(response)
+        }).then((response) =>{ 
+            res.redirect(response.data.html_url);
+        }
         )
     }
 }
