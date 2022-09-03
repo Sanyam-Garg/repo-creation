@@ -5,7 +5,7 @@ const axios = require('axios')
 const clientID = "d4d4d7944b3ed42ede70"
 const clientSecret = "83d406fac72e327de0d8068f412851b81a3543d1"
 
-@Controller('auth')
+@Controller('')
 export class ControllersController {
 
     @Get()
@@ -14,7 +14,7 @@ export class ControllersController {
         return {message: 'Hello G'}
     }
 
-    @Get('github/callback')
+    @Get('auth/github/callback')
     afterAuthorization(@Req() req: Request, @Res() res: Response){
         const code = req.query.code
 
@@ -26,7 +26,7 @@ export class ControllersController {
             }
         }).then((response) => {
             const accessToken = response.data.access_token
-            res.redirect(`/auth/profile?access_token=${accessToken}`)
+            res.redirect(`/profile?access_token=${accessToken}`)
         })
     }
 

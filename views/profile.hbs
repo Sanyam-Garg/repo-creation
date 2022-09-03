@@ -135,7 +135,7 @@ document.getElementById('create').addEventListener("click", function(){
     let name = document.getElementById('name').value
     if(name === "") alert('Name cannot be empty')
     else{
-        window.location = `http://localhost:3000/auth/create?access_token=${token}&name=${name}`
+        window.location = `/create?access_token=${token}&name=${name}`
     }
 })
 </script>
