@@ -32,3 +32,5 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+**The application is live on http://localhost:3000/**
