@@ -26,7 +26,6 @@ export class ControllersController {
             }
         }).then((response) => {
             const accessToken = response.data.access_token
-            console.log(accessToken)
             res.redirect(`/auth/profile?access_token=${accessToken}`)
         })
     }

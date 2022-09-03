@@ -8,16 +8,99 @@
 	<title>Hello</title>
 </head>
 
+<style>
+  body {
+  color: #333333;
+  font-family: arial;
+  max-width: 650px; 
+  margin: 0 auto;
+  padding: 0 16px;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+  footer {
+      color: #888888;
+      border-top: 1px solid #eeeeee;
+      margin-top: 16px;
+      padding: 16px 0;
+  }
+
+  header {
+      margin-top: 16px;
+      margin-bottom: 48px;
+  }
+
+  h2 {
+      font-size: 40px;
+      margin-bottom: 16px;
+  }
+
+  header a {
+      color: #888888;
+      margin-right: 16px;
+      text-decoration: none;
+  }
+
+  .portrait {
+      width: 250px;
+  }
+
+  .main-content {
+      flex-grow: 1;
+  }
+
+  input {
+      border: 1px solid #cccccc;
+      padding: 8px;
+      margin-right: 10px;
+  }
+
+  button {
+      cursor: pointer;
+      border: 1px solid #888888;
+      background: #888888;
+      color: white;
+      padding: 8px;
+  }
+
+  h4{
+    font-size: 30px;
+  }
+
+  #inp{
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+
+  #repos a{
+    color: black;
+    text-decoration: none;
+  }
+  
+</style>
+
 <body>
     <div id="welcome"></div>
 
-        <input type="text" id="name" name="name">
-        <button type="submit" id="create">Create new repository</button>
+    <div id="inp">
+        <input type="text" id="name" name="name" placeholder="repo name">
+        <button type="submit" id="create">Create</button>
+    </div>
+        
 
+    <div id="message"></div>
     
 
     <div id="repos"></div>
 </body>
+
+<footer>
+    <p>Created by: Sanyam</p>
+</footer>
 <script>
     const query = window.location.search.substring(1)
 const token = query.split('access_token=')[1]
@@ -32,7 +115,7 @@ const getUsername = fetch('https://api.github.com/user', {
                 .then(res => res.login)
 
 getUsername.then(username => {
-    document.getElementById('welcome').innerHTML += `<h1>Welcome, ${username}</h1>`
+    document.getElementById('welcome').innerHTML += `<h2>Welcome, ${username}</h2>`
     fetch(`https://api.github.com/users/${username}/repos`, {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -40,10 +123,10 @@ getUsername.then(username => {
     })
     .then(res => res.json())
     .then(res => {
-    document.getElementById('welcome').innerHTML += `<h2>Below are your repositories</h2>`
+    document.getElementById('message').innerHTML += `<h4>Below are your repositories</h4>`
         list = document.getElementById('repos')
         res.forEach((repo) => {
-            list.innerHTML += `<a href = ${repo.html_url}><h3>${repo.name}</h3></a>`
+            list.innerHTML += `<ul><li><h3><a href=${repo.html_url}>${repo.name}</a></h3></li></ul>`
         })
     })
 })
